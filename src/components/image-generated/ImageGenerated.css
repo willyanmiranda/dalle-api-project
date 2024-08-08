@@ -1,0 +1,16 @@
+.image-generated-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 600px;
+    width: 100%;
+    max-width: 500px;
+    background-color: #242940;
+    border-radius: 20px;
+    border: 8px solid #2C314D;
+}
+
+.image-generated-container img {
+    width: 250px;
+    height: 250px;
+}
