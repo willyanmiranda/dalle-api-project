@@ -7,4 +7,6 @@
 .generator-container {
   height: 100%;
   padding-left: 70px;
+  display: flex;
+  gap: 70px;
 }
