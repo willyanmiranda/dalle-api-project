@@ -2,7 +2,7 @@ import React from 'react'
 
 const InputRange = props => {
   return (
-    <div>
+    <div className='input-content'>
         <label htmlFor={props.name}>{props.label} <span>1000</span></label>
         <input type="range" id={props.name}/>
     </div>
