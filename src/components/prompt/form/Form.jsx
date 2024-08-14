@@ -1,7 +1,7 @@
 import {React, useReducer, useState} from 'react'
 import { Client } from "@gradio/client";
 import { useDispatch } from 'react-redux';
-import { setPhotos } from '../../../features/photos/photos';
+import { setPhotos, setLoader } from '../../../features/photos/photos';
 import InputRange from './input-range/InputRange'
 import Button from './button/Button'
 import './Form.css'
@@ -37,7 +37,21 @@ const Form = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        dispatchPhotos(setPhotos("teste"))
+        dispatchPhotos(setLoader())
+        const client = await Client.connect("mukaist/DALLE-4K");
+        const result = await client.predict("/run", { 		
+            prompt: state.prompt, 		
+            negative_prompt: state.prompt, 		
+            use_negative_prompt: state.promptNegative, 		
+            style: state.imageStyle, 		
+            seed: 0, 		
+            width: state.promptWidth, 		
+            height: state.promptHeight, 		
+            guidance_scale: 0.1, 		
+            randomize_seed: true, 
+        });
+        dispatchPhotos(setLoader())
+        dispatchPhotos(setPhotos(result.data[0]))
     };
 
     return (
