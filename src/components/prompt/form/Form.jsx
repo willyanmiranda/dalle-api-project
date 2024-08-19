@@ -1,4 +1,4 @@
-import {React, useReducer, useState} from 'react'
+import { React, useReducer, useRef } from 'react'
 import { Client } from "@gradio/client";
 import { useDispatch } from 'react-redux';
 import { setPhotos, setLoader } from '../../../features/photos/photos';
@@ -12,6 +12,16 @@ const initialValues = {
     promptNegative: true,
     promptWidth: 1024,
     promptHeight: 1024,
+}
+
+const examplesPrompt = {
+    default: '',
+    animals: '[Jaguar with green eyes stalking prey]::7 [detailed vegetation and waterfall in amazon rainforest background, cinematic shoot, ultrareal, morning light]::3 --ar 16:9 --s 400',
+    tatoo: 'yakuza arm tattoo, ultrareal, photorealisitic, close-up, centered, Nikon D850 105mm --ar 2:1',
+    macro: 'Extreme close-up by Oliver Dum, magnified view of a dewdrop on a spider web occupying the frame, the camera focuses closely on the object with the background blurred. The image is lit with natural sunlight, enhancing the vivid textures and contrasting colors.',
+    pixel: 'A cozy pixel art café with steaming coffee cups and patrons, viewed through a rainy window, 32-bit point and click.',
+    cartoon: 'a puppy happy with excitement, in the style of cartoon realism, disney animation, hyper-realistic portraits, 32k uhd, cute cartoonish designs, wallpaper, luminous brushwork --ar 2:1',
+    picture: 'A serene lakeside scene at sunset with visible brushwork. Impasto texture and chiaroscuro lighting, emulating the style of a classical oil painting --ar 2:1'
 }
 
 const reducer = (state, action) => {
@@ -30,6 +40,7 @@ const Form = () => {
 
     const [state, dispatch] = useReducer(reducer, initialValues);
     const dispatchPhotos = useDispatch()
+    const buttonRef = useRef(null)
 
     const handleChange = (e) => {
         dispatch({ type: 'SET_FIELD', field: e.target.name, value: e.target.value });
@@ -38,6 +49,7 @@ const Form = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         dispatchPhotos(setLoader())
+        buttonRef.current.disabled = true
         const client = await Client.connect("mukaist/DALLE-4K");
         const result = await client.predict("/run", { 		
             prompt: state.prompt, 		
@@ -45,8 +57,8 @@ const Form = () => {
             use_negative_prompt: state.promptNegative, 		
             style: state.imageStyle, 		
             seed: 0, 		
-            width: state.promptWidth, 		
-            height: state.promptHeight, 		
+            width: parseInt(state.promptWidth), 		
+            height: parseInt(state.promptHeight), 		
             guidance_scale: 0.1, 		
             randomize_seed: true, 
         });
@@ -54,11 +66,32 @@ const Form = () => {
         dispatchPhotos(setPhotos(result.data[0]))
     };
 
+    const handlePromptValue = (e) => {
+        let example = examplesPrompt[e.target.value]
+        console.log(example)
+        dispatch({ type: 'SET_FIELD', field: 'prompt', value: example });
+    }
+
     return (
         <form>
             <div className='input-content'>
                 <label htmlFor="prompt">Prompt</label>
                 <input type="text" onChange={handleChange} value={state.prompt} name="prompt" id="prompt" placeholder='Digite o prompt...' />
+            </div>
+
+            <div className='input-container'>
+                <div className='input-content'>
+                    <label htmlFor="promptExample">Exemplos de prompts</label>
+                    <select onChange={handlePromptValue} name="promptExample" id="promptExample">
+                        <option value="default">Selecione um prompt</option>
+                        <option value="animals">Animais</option>
+                        <option value="tatoo">Tatuagens</option>
+                        <option value="macro">Fotos detalhadas</option>
+                        <option value="pixel">Pixel art</option>
+                        <option value="cartoon">Cartoon</option>
+                        <option value="picture">Pintura</option>
+                    </select>
+                </div>
             </div>
 
             <div className='input-container'>
@@ -88,7 +121,7 @@ const Form = () => {
                 <InputRange handleRange={handleChange} rangeValue={state.promptHeight} name="promptHeight" label="Altura"/>
             </div>
 
-            <Button handleClick={handleSubmit} name="Criar"/>
+            <Button ref={buttonRef} handleClick={handleSubmit} name="Criar"/>
         </form>
     )
 }

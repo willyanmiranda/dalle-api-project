@@ -13,6 +13,13 @@ button {
         background-color: #3640fc;
     }
 }
+button:disabled {
+    cursor: default;
+    background-color: #2563eb5c;
+    &:hover {
+        background-color: #2563eb5c !important;
+    }
+}
 button:focus,
 button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;

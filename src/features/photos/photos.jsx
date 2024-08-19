@@ -17,7 +17,6 @@ export const photoSlice = createSlice({
   },
 })
 
-// Action creators are generated for each case reducer function
 export const { setPhotos, setLoader } = photoSlice.actions
 
 export default photoSlice.reducer

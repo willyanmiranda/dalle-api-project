@@ -1,10 +1,10 @@
 import React from 'react'
 import "./Button.css"
 
-const Button = props => {
+const Button = React.forwardRef((props, ref) => {
   return (
-    <button onClick={props.handleClick}>{props.name}</button>
+    <button ref={ref} onClick={props.handleClick}>{props.name}</button>
   )
-}
+})
 
 export default Button
