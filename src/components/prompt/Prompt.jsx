@@ -1,17 +1,18 @@
-import React from 'react'
+import { React, useState } from 'react'
 import Header from './header/Header';
 import Form from './form/Form';
+import DownloadImage from './download-image/DownloadImage';
+import { useSelector } from 'react-redux';
 import './Prompt.css'
 
 const Prompt = () => {
-
+  const photos = useSelector((state) => state.photos.value);
   return (
     <div className='prompt-container'>
-        <Header/>
-        <Form/>
+      <Header hasPhotos={!!photos}/>
+      {!photos ? (<Form/>) : (<DownloadImage/>)}
     </div>
-   
   )
 }
 
-export default Prompt
+export default Prompt;

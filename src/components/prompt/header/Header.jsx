@@ -1,11 +1,11 @@
-import React from 'react'
+import { React } from 'react'
 import './Header.css'
 
-const Header = () => {
+const Header = (props) => {
   return (
     <div className='prompt-header'>
-       <span className='prompt-properties active'>Propriedades</span>
-       <span className='prompt-info'>Info</span>
+       <span className={`prompt-properties ${!props.hasPhotos ? 'active' : ''}`}>Propriedades</span>
+       <span className={`prompt-info ${props.hasPhotos ? 'active' : ''}`}>Info</span>
     </div>
   )
 }
