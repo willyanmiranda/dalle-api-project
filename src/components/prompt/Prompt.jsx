@@ -10,7 +10,7 @@ const Prompt = () => {
   return (
     <div className='prompt-container'>
       <Header hasPhotos={!!photos}/>
-      {!photos ? (<Form/>) : (<DownloadImage/>)}
+      {!photos ? (<Form/>) : (<DownloadImage images={photos}/>)}
     </div>
   )
 }
