@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const photoSlice = createSlice({
   name: 'photo',
   initialState: {
-    value: [],
+    value: null,
     isLoading: false,
   },
   reducers: {

@@ -121,7 +121,7 @@ const Form = () => {
                 <InputRange handleRange={handleChange} rangeValue={state.promptHeight} name="promptHeight" label="Altura"/>
             </div>
 
-            <Button ref={buttonRef} handleClick={handleSubmit} name="Criar"/>
+            <Button ref={buttonRef} handleClick={handleSubmit} name="Criar" img={Plus}/>
         </form>
     )
 }
